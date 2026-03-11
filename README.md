@@ -32,7 +32,7 @@
 
 ### Sites interessantes
 
-- [Editor Online]()https://www.onlinegdb.com/)
+- [Editor Online](https://www.onlinegdb.com/)
 - [Documentação da Linguagem](https://docs.python.org/3.13/)
 - [pygame](https://www.pygame.org/news)
 - [arcade](https://api.arcade.academy/en/stable/)
