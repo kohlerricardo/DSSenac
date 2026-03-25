@@ -1,0 +1,8 @@
+game/__pycache__/
+game/*.pyc
+game/*.pyd
+game/bin
+game/include
+game/lib
+game/src/__pycache__/
+pyvenv.cfg
