@@ -2,6 +2,7 @@ import settings
 import pygame
 from src.entities.player import Player
 from src.entities.coin import Coin
+from src.ui.hud import HUD
 import random
 
 # Função auxiliar para criar moedas em locais aleatórios.
@@ -29,8 +30,10 @@ def main():
     spawn_coin(coins_group) # Gera as moedas iniciais.
 
     # Configuração de Texto (Interface/UI).
-    fonte = pygame.font.SysFont("Monospace", 15, True, True) # Fonte negrito e itálico.
-    formatacao_texto = fonte.render("Score: 0", False, (255, 255, 255)) # Renderiza o texto inicial do Score.
+    hud = HUD() # Cria o objeto HUD para gerenciar a interface de pontuação.
+
+    # fonte = pygame.font.SysFont("Monospace", 15, True, True) # Fonte negrito e itálico.
+    # formatacao_texto = fonte.render("Score: 0", False, (255, 255, 255)) # Renderiza o texto inicial do Score.
     running = True
     while running:
         # Calcula quanto tempo passou desde o último frame (em segundos).
@@ -52,10 +55,10 @@ def main():
                 player.increase_score(coin.points) # Aumenta o score no objeto player.
             
             # Atualiza o texto visual do Score após a coleta.
-            mensagem = f"Score: {player.score}"
-            formatacao_texto = fonte.render(mensagem, False, (255, 255, 255))
-        
-        screen.blit(formatacao_texto, (10, 10)) # Desenha o texto na tela.
+            # mensagem = f"Score: {player.score}"
+            # formatacao_texto = fonte.render(mensagem, False, (255, 255, 255))
+            
+        # screen.blit(formatacao_texto, (10, 10)) # Desenha o texto na tela.
 
         # Se todas as moedas acabarem, gera uma nova "onda".
         if len(coins_group) == 0:
@@ -66,7 +69,8 @@ def main():
         players_group.draw(screen)  # Desenha o player.
         coins_group.update(dt)      # (Moedas são estáticas, mas o grupo exige).
         coins_group.draw(screen)    # Desenha as moedas restantes.
-        
+        hud.draw(screen,player)              # Desenha o HUD (pontuação) na tela.
+
         pygame.display.flip() # Atualiza o monitor com o que foi desenhado.
 
     pygame.quit()
