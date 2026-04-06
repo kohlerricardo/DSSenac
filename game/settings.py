@@ -6,3 +6,4 @@ PLAYER_SPEED = 200        # Velocidade base (pixels por segundo).
 TITLE = "Meu Jogo"        # Nome que aparece na barra da janela.
 BG_COLOR = (120, 130, 100)# Cor de fundo em formato RGB.
 COIN_COUNT = 5            # Quantidade de moedas geradas por vez.
+FONT_SIZE = 25

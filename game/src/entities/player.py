@@ -7,16 +7,18 @@ class Player(pygame.sprite.Sprite): # Herança: Player 'é um' Sprite do Pygame.
         super().__init__()          # Inicializa a lógica interna de Sprites.
         self.name = name            # Atributo para identificação.
         self.score = 0              # Pontuação individual do jogador.
-        self.image = pygame.Surface((48, 48)) # Placeholder visual inicial.
-        
-        try:
-            # Tenta carregar a imagem inicial (olhando para cima).
-            loaded_image = pygame.image.load("assets/images/up.png").convert_alpha()
-            self.image = loaded_image
-        except pygame.error as e:
-            # Se a imagem faltar, pinta de rosa choque (padrão de erro).
-            self.image.fill((255, 0, 255))
+        self.image = pygame.Surface((32,32)) # Placeholder visual inicial.
+        self.dict_images = {}
+        for image in ['up','down','left','right']:
+            try:
+                # Tenta carregar a imagem inicial (olhando para cima).
+                loaded_image = pygame.image.load(os.path.join("assets","images",f"{image}.png")).convert_alpha()
+                self.dict_images[image] = loaded_image
+            except pygame.error as e:
+                # Se a imagem faltar, pinta de rosa choque (padrão de erro).
+                self.image.fill((255, 0, 255))
             
+        self.image = self.dict_images['down']
         self.rect = self.image.get_rect() # Cria o retângulo de colisão da imagem.
         # Posiciona o jogador no centro exato da tela usando as settings.
         self.rect.center = (settings.WIDTH // 2, settings.HEIGHT // 2)
@@ -30,16 +32,16 @@ class Player(pygame.sprite.Sprite): # Herança: Player 'é um' Sprite do Pygame.
         # Movimentação multiplicada pelo Delta Time (dt) para ser independente do FPS.
         if keys[pygame.K_LEFT]:
             self.rect.x -= settings.PLAYER_SPEED * dt
-            self.load_image("left") # Troca o visual para a esquerda.
+            self.image = self.dict_images['left'] # Troca o visual para a esquerda.
         if keys[pygame.K_RIGHT]:
             self.rect.x += settings.PLAYER_SPEED * dt
-            self.load_image("right")
+            self.image = self.dict_images['right']
         if keys[pygame.K_UP]:
             self.rect.y -= settings.PLAYER_SPEED * dt
-            self.load_image("up")
+            self.image = self.dict_images['up']
         if keys[pygame.K_DOWN]:
             self.rect.y += settings.PLAYER_SPEED * dt
-            self.load_image("down")
+            self.image = self.dict_images['down']
             
         # Sistema de "Clamping": impede que o rect saia das bordas da tela.
         self.rect.x = max(0, min(self.rect.x, settings.WIDTH - self.rect.width))

@@ -1,10 +1,11 @@
 import pygame
+import settings
 class HUD:
     def __init__(self):
         """"
         Configurações iniciais do HUD, como fonte e texto.
         """
-        self.font_size = 20
+        self.font_size = settings.FONT_SIZE
         self.font = pygame.font.SysFont("Monospace", self.font_size, True, False) # Fonte negrito.
         self.score_text = self.font.render("Score: 0", False, (255, 255, 255)) # Texto inicial do Score. 
         self.text_color = (255, 255, 255) # Branco
