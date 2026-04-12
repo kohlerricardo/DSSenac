@@ -3,7 +3,11 @@ import pygame
 from src.entities.player import Player
 from src.entities.coin import Coin
 from src.ui.hud import HUD
+from src.ui.menu import Menu
+from src.ui.pause import Pause
+from src.ui.gameplay import Gameplay
 import random
+from src.engine.coin_spawner import CoinSpawner
 
 # Função auxiliar para criar moedas em locais aleatórios.
 def spawn_coin(coins_group):
@@ -20,57 +24,34 @@ def main():
     screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
     pygame.display.set_caption(settings.TITLE)
     clock = pygame.time.Clock() # Objeto para controlar o tempo/FPS.
-    
-    # Grupos de Sprites: Essenciais para desenho e colisão em massa.
-    players_group = pygame.sprite.Group()
-    coins_group = pygame.sprite.Group()
-    
-    player = Player("Player1")
-    players_group.add(player)
-    spawn_coin(coins_group) # Gera as moedas iniciais.
+    status = "MENU" # Estado inicial do jogo (pode ser "MENU", "PLAYING", "GAME_OVER", etc).
+    estados = {
+        "MENU": Menu(),
+        "PAUSED": Pause(),
+        "PLAYING": Gameplay("Player1")
+    }
 
-    # Configuração de Texto (Interface/UI).
-    hud = HUD() # Cria o objeto HUD para gerenciar a interface de pontuação.
-
-    # fonte = pygame.font.SysFont("Monospace", 15, True, True) # Fonte negrito e itálico.
-    # formatacao_texto = fonte.render("Score: 0", False, (255, 255, 255)) # Renderiza o texto inicial do Score.
     running = True
+    
     while running:
         # Calcula quanto tempo passou desde o último frame (em segundos).
         dt = clock.tick(settings.FPS) / 1000  
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
         
-        screen.fill(settings.BG_COLOR) # Limpa a tela com a cor de fundo.
-        
-        # DETECÇÃO DE COLISÃO:
-        # Verifica se o 'player' tocou em algo do grupo 'coins'. 
-        # O 'True' indica que a moeda deve ser excluída (kill) se houver toque.
-        colision = pygame.sprite.spritecollide(player, coins_group, True)
-        
-        if colision:
-            for coin in colision:
-                player.increase_score(coin.points) # Aumenta o score no objeto player.
-            
-            # Atualiza o texto visual do Score após a coleta.
-            # mensagem = f"Score: {player.score}"
-            # formatacao_texto = fonte.render(mensagem, False, (255, 255, 255))
-            
-        # screen.blit(formatacao_texto, (10, 10)) # Desenha o texto na tela.
-
-        # Se todas as moedas acabarem, gera uma nova "onda".
-        if len(coins_group) == 0:
-            spawn_coin(coins_group)
-            
-        # Atualização de lógica e desenho via GRUPOS.
-        players_group.update(dt)    # Move o player.
-        players_group.draw(screen)  # Desenha o player.
-        coins_group.update(dt)      # (Moedas são estáticas, mas o grupo exige).
-        coins_group.draw(screen)    # Desenha as moedas restantes.
-        hud.draw(screen,player)              # Desenha o HUD (pontuação) na tela.
-
+        if event.type == pygame.KEYDOWN:
+            if status == "MENU" and event.key == pygame.K_RETURN:
+                status = "PLAYING" # Inicia o jogo ao pressionar ENTER no menu.
+            elif status == "PLAYING" and event.key == pygame.K_ESCAPE:
+                status = "PAUSED" # Permite pausar o jogo com ESC.
+                print("Jogo pausado. Pressione 'P' para continuar.")
+            elif status == "PAUSED" and event.key == pygame.K_ESCAPE:
+                status = "PLAYING" # Permite pausar o jogo com ESC.
+                print("Continuando o jogo.")
+        cena = estados.get(status)
+        cena.update(dt) # Atualiza a lógica da cena atual (menu, pausa, etc).
+        cena.draw(screen) # Desenha a cena atual na tela.
         pygame.display.flip() # Atualiza o monitor com o que foi desenhado.
 
     pygame.quit()

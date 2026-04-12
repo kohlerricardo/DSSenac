@@ -1,7 +1,7 @@
 import pygame
 import settings
 import os  
-
+import random
 class Player(pygame.sprite.Sprite): # Herança: Player 'é um' Sprite do Pygame.
     def __init__(self, name):
         super().__init__()          # Inicializa a lógica interna de Sprites.
@@ -42,7 +42,7 @@ class Player(pygame.sprite.Sprite): # Herança: Player 'é um' Sprite do Pygame.
         if keys[pygame.K_DOWN]:
             self.rect.y += settings.PLAYER_SPEED * dt
             self.image = self.dict_images['down']
-            
+
         # Sistema de "Clamping": impede que o rect saia das bordas da tela.
         self.rect.x = max(0, min(self.rect.x, settings.WIDTH - self.rect.width))
         self.rect.y = max(0, min(self.rect.y, settings.HEIGHT - self.rect.height))
@@ -55,3 +55,4 @@ class Player(pygame.sprite.Sprite): # Herança: Player 'é um' Sprite do Pygame.
             self.image = pygame.image.load(image_path).convert_alpha()
         except:
             pass # Mantém a imagem atual se a nova falhar.
+

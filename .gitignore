@@ -4,5 +4,9 @@ game/*.pyd
 game/bin
 game/include
 game/lib
-game/src/__pycache__/
+game/src/__pycache__
+game/src/engine/__pycache__
+game/src/entities/__pycache__
+game/src/ui/__pycache__
+*/__pycache__/
 pyvenv.cfg
