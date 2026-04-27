@@ -1,27 +1,14 @@
 import settings
 import pygame
-from src.entities.player import Player
-from src.entities.coin import Coin
 from src.ui.hud import HUD
 from src.ui.menu import Menu
 from src.ui.pause import Pause
 from src.ui.gameplay import Gameplay
-import random
-from src.engine.coin_spawner import CoinSpawner
-
-# Função auxiliar para criar moedas em locais aleatórios.
-def spawn_coin(coins_group):
-    for i in range(settings.COIN_COUNT):
-        # Utiliza a função random para gerar coordenadas aleatórias 
-        #dentro dos limites da tela, considerando o tamanho da moeda.
-        x = random.randint(0, settings.WIDTH - 16) # 16 é o tamanho da moeda, para evitar spawn fora da tela.
-        y = random.randint(0, settings.HEIGHT - 16)
-        coin = Coin(x, y, i+1)
-        coins_group.add(coin) # Adiciona a moeda ao grupo de gerenciamento.
 
 def main():
     pygame.init() # Inicializa todos os módulos do Pygame.
     screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
+    
     pygame.display.set_caption(settings.TITLE)
     clock = pygame.time.Clock() # Objeto para controlar o tempo/FPS.
     status = "MENU" # Estado inicial do jogo (pode ser "MENU", "PLAYING", "GAME_OVER", etc).
