@@ -2,7 +2,7 @@ import pygame
 import settings
 import os  
 import random
-class Player(pygame.sprite.Sprite): # Herança: Player 'é um' Sprite do Pygame.
+class Persona(pygame.sprite.Sprite): # Herança: Player 'é um' Sprite do Pygame.
     def __init__(self, name):
         super().__init__()          # Inicializa a lógica interna de Sprites.
         self.name = name            # Atributo para identificação.
@@ -29,6 +29,8 @@ class Player(pygame.sprite.Sprite): # Herança: Player 'é um' Sprite do Pygame.
         #oriunda do arquivo settings.py, onde definimos um valor fixo para a gravidade do jogo.
         self.pulo = settings.FORCA_PULO # Velocidade inicial do pulo.
         self.no_chao = True # Flag para verificar se o player está no chão
+        
+
     # Método para que o movimento de pulo seja aplicado, alterando a velocidade vertical do player e a imagem para a animação de pulo.
     def _jump(self):
         self.vel_y = -self.pulo # Aplica a força de pulo na velocidade vertical (negativa para subir).
@@ -67,6 +69,7 @@ class Player(pygame.sprite.Sprite): # Herança: Player 'é um' Sprite do Pygame.
         # Sistema de "Clamping": impede que o rect saia das bordas da tela.
         self.rect.x = max(0, min(self.rect.x, settings.WIDTH - self.rect.width))
         self.rect.y = max(0, min(self.rect.y, settings.HEIGHT - self.rect.height))
+        
 
     def load_image(self, direction):
         # Constrói o caminho da imagem dinamicamente (ex: assets/left.png).
